@@ -20,10 +20,20 @@ class TestDeck(unittest.TestCase):
         deck = Deck()
         assert len(deck.card_list) == 52
 
+    def test_for_unusual_amount_of_cards(self):
+        deck2 = Deck([2, 1], ["clubs", "spades"])
+        assert len(deck2.card_list) == 2
+
 
 class TestHand(unittest.TestCase):
     # your tests here
     pass
 
+
+# class TestSort(unittest.TestCase):
+#     """Tests for sorted deck"""
+
+#     deck = Deck()
+#     assert
 
 unittest.main()  # Runs all tests above
