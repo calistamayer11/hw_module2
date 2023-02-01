@@ -1,30 +1,40 @@
 from random import shuffle
 
-
+# key function for sorting
 def sort_card(card_obj):
     """key function for sort in Deck class"""
     return card_obj.suit, card_obj.value
 
 
+# create default values and suits for Deck Class
+default_values = []
+default_suits = []
+for suit in ["clubs", "diamonds", "hearts", "spades"]:
+    for value in list(range(1, 14)):
+        default_values.append(value)
+        default_suits.append(suit)
+
+
 class Deck:
-    def __init__(self, values=None, suits=None):
-        # self.suits = ["clubs", "diamonds", "hearts", "spades"]
+    """A class that initiates a deck of cards, a card list, a sort method and a shuffle method"""
+
+    def __init__(self, values=default_values, suits=default_suits):
+        """Initializes the deck class"""
         self.suits = suits
-        # self.values = list(range(1, 14))
         self.values = values
         self.card_list = []
-        # if lists are None, create default deck of 52 cards
-        if values == None and suits == None:
-            for suit in ["clubs", "diamonds", "hearts", "spades"]:
-                for value in list(range(1, 14)):
-                    self.card_list.append(Card(value, suit))
-        else:
-            # length of lists suits and values should be the same
-            for index in range(len(suits)):
-                self.card_list.append(Card(values[index], suits[index]))
+
+        # length of lists suits and values should be the same
+        for index in range(len(suits)):
+            self.card_list.append(Card(values[index], suits[index]))
 
     def __repr__(self):
+        """Magic method for repr"""
         return f"Deck: {self.card_list}"
+
+    def __len__(self):
+        """Magic method for length method"""
+        return len(self.card_list)
 
     def sort(self):
         """run sorted, key function returns tuple in order that sort is wanted -> suit then value"""
@@ -40,7 +50,10 @@ class Deck:
 
 
 class Card:
+    """A class that creates a card object"""
+
     def __init__(self, value, suit):
+        """Initializes the card class"""
         self.value = value
         self.suit = suit
 
@@ -55,17 +68,23 @@ class Card:
         else:
             return self.suit < card.suit
 
-
-# print(Card(1, "clubs") < Card(2, "clubs"))
-# print(Card(2, "clubs") < Card(1, "clubs"))
-# print(Card(1, "spades") < Card(1, "clubs"))
+    def __eq__(self, card):
+        """Magic method for equal method"""
+        if self.suit == card.suit and self.value == card.value:
+            return True
+        else:
+            return False
 
 
 class Hand(Deck):
+    """A class that initiates a hand of cards and has a card list and a play method"""
+
     def __init__(self, card_list):
+        """Initializes the hand class"""
         self.card_list = card_list
 
     def __repr__(self):
+        """Magic method for repr"""
         return f"Hand: {self.card_list}"
 
     def play(self, card):
@@ -80,23 +99,3 @@ class Hand(Deck):
             raise Exception(
                 f"Attempt to play {card} that is not in Hand: {self.card_list}"
             )
-
-
-# deck = Deck()
-# print(len(deck.card_list))
-# print(deck.card_list[48].suit)
-# print(deck.card_list[48].value)
-two_of_spades = Card(2, "spades")
-deck2 = Deck([10, 2, 5, 1], ["hearts", "spades", "clubs", "clubs"])
-hand = Hand([Card(10, "hearts"), two_of_spades])
-
-print(f"{deck2=}")
-# deck2.sort()
-# print(f"{deck2=}")
-# print(deck2.draw_top())
-# print(deck2.card_list)
-card = hand.play(two_of_spades)
-print(f"{card=}")
-print(hand.play(two_of_spades))
-print(hand)
-print(hand.play(two_of_spades))
